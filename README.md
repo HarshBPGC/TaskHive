@@ -1,6 +1,6 @@
-# TaskHive - Intelligent Task Management System
+# TaskHive - Task Management System
 
-TaskHive is a sophisticated task management system that uses AI-powered algorithms to intelligently assign tasks to employees based on their skills, experience, workload, and performance. The system features a modern Streamlit-based user interface for easy task and employee management.
+TaskHive is a task management system that helps assign tasks to employees based on their skills, experience, workload, and performance. The system features a modern Streamlit-based user interface for easy task and employee management.
 
 ## Features
 
@@ -17,18 +17,18 @@ TaskHive is a sophisticated task management system that uses AI-powered algorith
 - Monitor employee performance and experience
 - View assigned tasks and current workload
 
-### Intelligent Task Assignment
-- AI-powered task assignment recommendations
-- Skill matching algorithm
+### Task Assignment
+- Skill-based task matching
 - Workload balancing
 - Experience-based scoring
 - Performance-based prioritization
+- Assignment recommendations based on multiple factors
 
 ## Technical Stack
 - Python 3.x
 - Streamlit for the web interface
 - Pandas for data handling
-- Custom AI algorithms for task assignment
+- Custom algorithms for task assignment
 
 ## Installation
 
@@ -85,7 +85,7 @@ http://localhost:8501
 ### Assigning Tasks
 1. Go to "Task Assignment" page
 2. Select an unassigned task
-3. View AI-generated recommendations
+3. View task assignment recommendations
 4. Choose an employee from the recommendations or assign manually
 
 ## System Architecture
@@ -98,7 +98,7 @@ The system consists of three main components:
    - Skill and priority enums for standardization
 
 2. **Task Assignment System** (`task_assignment.py`):
-   - Intelligent task assignment algorithms
+   - Task assignment algorithms
    - Skill matching calculations
    - Workload balancing
    - Performance scoring
@@ -107,7 +107,7 @@ The system consists of three main components:
    - Streamlit-based web interface
    - Interactive forms for data entry
    - Real-time task and employee management
-   - Visual task assignment recommendations
+   - Task assignment recommendations
 
 ## Contributing
 
