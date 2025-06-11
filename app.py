@@ -3,6 +3,9 @@ import pandas as pd
 import numpy as np
 from models import Employee, Task, TaskPriority, Skill, SkillLevel
 from task_assignment import TaskAssignmentSystem
+import plotly.express as px
+import plotly.graph_objects as go
+from datetime import datetime, timedelta
 
 # Initialize the task assignment system
 if 'task_system' not in st.session_state:
@@ -21,10 +24,125 @@ st.markdown("Manage employees and tasks efficiently")
 
 # Sidebar
 st.sidebar.header("Navigation")
-page = st.sidebar.radio("Go to", ["Task Management", "Employee Management", "Task Assignment"])
+page = st.sidebar.radio("Go to", ["Dashboard", "Task Management", "Employee Management", "Task Assignment"])
 
-# Main content area
-if page == "Task Management":
+# Dashboard page
+if page == "Dashboard":
+    st.header("Dashboard")
+    
+    # Create metrics row
+    col1, col2, col3, col4 = st.columns(4)
+    
+    # Calculate metrics
+    total_tasks = len(st.session_state.task_system.tasks)
+    completed_tasks = sum(1 for task in st.session_state.task_system.tasks.values() if task.is_completed)
+    total_employees = len(st.session_state.task_system.employees)
+    pending_tasks = total_tasks - completed_tasks
+    
+    # Display metrics
+    with col1:
+        st.metric("Total Tasks", total_tasks)
+    with col2:
+        st.metric("Completed Tasks", completed_tasks)
+    with col3:
+        st.metric("Pending Tasks", pending_tasks)
+    with col4:
+        st.metric("Total Employees", total_employees)
+    
+    # Create two columns for charts
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        # Task Priority Distribution
+        st.subheader("Task Priority Distribution")
+        priority_data = {
+            priority.name: sum(1 for task in st.session_state.task_system.tasks.values() 
+                             if task.priority == priority)
+            for priority in TaskPriority
+        }
+        fig_priority = px.pie(
+            values=list(priority_data.values()),
+            names=list(priority_data.keys()),
+            title="Tasks by Priority"
+        )
+        st.plotly_chart(fig_priority, use_container_width=True)
+        
+        # Employee Workload Distribution
+        st.subheader("Employee Workload Distribution")
+        workload_data = {
+            emp.name: emp.current_workload
+            for emp in st.session_state.task_system.employees.values()
+        }
+        workload_df = pd.DataFrame({
+            'Employee': list(workload_data.keys()),
+            'Hours': list(workload_data.values())
+        })
+        fig_workload = px.bar(
+            workload_df,
+            x='Employee',
+            y='Hours',
+            title="Current Workload by Employee"
+        )
+        st.plotly_chart(fig_workload, use_container_width=True)
+    
+    with col2:
+        # Task Completion Status
+        st.subheader("Task Completion Status")
+        completion_data = {
+            'Status': ['Completed', 'Pending'],
+            'Count': [completed_tasks, pending_tasks]
+        }
+        fig_completion = px.pie(
+            completion_data,
+            values='Count',
+            names='Status',
+            title="Task Completion Status"
+        )
+        st.plotly_chart(fig_completion, use_container_width=True)
+        
+        # Skill Distribution
+        st.subheader("Skill Distribution")
+        skill_data = {}
+        for emp in st.session_state.task_system.employees.values():
+            for skill in emp.skills:
+                if skill.name in skill_data:
+                    skill_data[skill.name] += 1
+                else:
+                    skill_data[skill.name] = 1
+        
+        skills_df = pd.DataFrame({
+            'Skill': list(skill_data.keys()),
+            'Number of Employees': list(skill_data.values())
+        })
+        fig_skills = px.bar(
+            skills_df,
+            x='Skill',
+            y='Number of Employees',
+            title="Employee Skills Distribution"
+        )
+        st.plotly_chart(fig_skills, use_container_width=True)
+    
+    # Recent Activity
+    st.subheader("Recent Activity")
+    activity_data = []
+    for task in st.session_state.task_system.tasks.values():
+        activity_data.append({
+            "Task": task.name,
+            "Status": "Completed" if task.is_completed else "Pending",
+            "Assigned To": task.assigned_to or "Unassigned",
+            "Priority": task.priority.name
+        })
+    
+    if activity_data:
+        st.dataframe(
+            pd.DataFrame(activity_data),
+            use_container_width=True,
+            hide_index=True
+        )
+    else:
+        st.info("No recent activity to display")
+
+elif page == "Task Management":
     st.header("Task Management")
     
     # Add new task form
@@ -193,4 +311,3 @@ elif page == "Task Assignment":
 
 # Add a footer
 st.markdown("---")
-st.markdown("Built with ❤️ using Streamlit") 
