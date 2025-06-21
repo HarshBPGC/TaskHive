@@ -1,6 +1,6 @@
-# TaskHive - Task Management System
+# Task Assignment System - Pattern Matching Algorithm
 
-TaskHive is a task management system that helps assign tasks to employees based on their skills, experience, workload, and performance. The system features a modern Streamlit-based user interface for easy task and employee management.
+A simple task assignment system that uses pattern matching algorithms to assign tasks to employees based on their skills, experience, workload, and performance. The system features a clean Streamlit-based user interface for easy task and employee management.
 
 ## Features
 
@@ -17,25 +17,25 @@ TaskHive is a task management system that helps assign tasks to employees based 
 - Monitor employee performance and experience
 - View assigned tasks and current workload
 
-### Task Assignment
-- Skill-based task matching
-- Workload balancing
-- Experience-based scoring
-- Performance-based prioritization
-- Assignment recommendations based on multiple factors
+### Pattern Matching Algorithm
+- **Skill-based matching**: Matches employee skills to task requirements
+- **Workload balancing**: Considers current workload vs. maximum capacity
+- **Experience scoring**: Factors in years of experience for relevant skills
+- **Performance-based prioritization**: Higher performing employees get priority for critical tasks
+- **Multi-factor scoring**: Combines all factors using weighted algorithms
 
 ## Technical Stack
 - Python 3.x
 - Streamlit for the web interface
 - Pandas for data handling
-- Custom algorithms for task assignment
+- Custom pattern matching algorithms for task assignment
 
 ## Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/HarshBPGC/TaskHive.git
-cd TaskHive
+git clone <repository-url>
+cd <repository-directory>
 ```
 
 2. Create and activate a virtual environment:
@@ -68,7 +68,8 @@ http://localhost:8501
    - Employee ID
    - Name
    - Maximum workload hours
-   - Skills and their levels
+   - Performance rating (0.1 to 1.0)
+   - Skills and their levels (BEGINNER, INTERMEDIATE, ADVANCED, EXPERT)
    - Years of experience for each skill
 
 ### Creating Tasks
@@ -79,14 +80,32 @@ http://localhost:8501
    - Task Name
    - Priority level
    - Estimated hours
-   - Deadline
+   - Deadline (in days)
    - Required skills and their levels
 
-### Assigning Tasks
+### Using the Pattern Matching Algorithm
 1. Go to "Task Assignment" page
 2. Select an unassigned task
-3. View task assignment recommendations
-4. Choose an employee from the recommendations or assign manually
+3. Click "Get Assignment Recommendations"
+4. View the algorithm's recommendations with:
+   - Assignment probability percentage
+   - Skill match percentage
+   - Availability percentage
+   - Current workload details
+   - Performance rating
+5. Assign the task to the recommended employee or choose manually
+
+## Algorithm Details
+
+The pattern matching algorithm uses a weighted scoring system:
+
+- **Skill Match (40%)**: How well employee skills match task requirements
+- **Availability (25%)**: Current workload vs. maximum capacity
+- **Experience (15%)**: Years of experience in required skills
+- **Performance (10%)**: Employee performance rating
+- **Priority Match (10%)**: How well employee performance matches task priority needs
+
+The final probability is calculated using a sigmoid function to ensure values between 0 and 1.
 
 ## System Architecture
 
@@ -98,16 +117,16 @@ The system consists of three main components:
    - Skill and priority enums for standardization
 
 2. **Task Assignment System** (`task_assignment.py`):
-   - Task assignment algorithms
-   - Skill matching calculations
-   - Workload balancing
-   - Performance scoring
+   - Pattern matching algorithms
+   - Skill similarity calculations
+   - Workload balancing logic
+   - Multi-factor scoring system
 
 3. **User Interface** (`app.py`):
    - Streamlit-based web interface
    - Interactive forms for data entry
    - Real-time task and employee management
-   - Task assignment recommendations
+   - Algorithm recommendations display
 
 ## Contributing
 
@@ -115,9 +134,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Author
-
-Harsh Shah
-- GitHub: [@HarshBPGC](https://github.com/HarshBPGC) 
+This project is licensed under the MIT License - see the LICENSE file for details. 
